@@ -3,36 +3,36 @@ package com.gadware.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 
 class ComposeActivityDemo : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ShowColumn()
+            DisplayUserDetails(UserInfo("Abdullah","Dhaka, Bangladesh"))
         }
     }
 }
 
-
 @Composable
-fun ShowColumn(){
-    Column {//displays contents vertically
-        Text( "this is a text ")
-        Text( "this is second text ")
+fun DisplayUserDetails(userInfo: UserInfo){
+    Row {
+        Image(
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = "This Is Profile Picture"
+        )
+        Column {
+            Text( "Name: ${userInfo.name}")
+            Text( "Address: ${userInfo.address}")
+        }
     }
 
 }
-@Preview
-@Composable
-fun ShowRow(){
-    Row {//displays contents horizontally
-        Text( "this is a text ")
-        Text( "this is second text ")
-    }
 
-}
+data class UserInfo(val name: String, val address:String)
