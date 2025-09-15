@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -70,18 +75,20 @@ fun DisplayUserInfo(userInfo: UserDetails = UserDetails("Abdullah", "Dhaka, Bang
             )
 
             Spacer(modifier = Modifier.width(5.dp))//// Add a horizontal space between the image and the column
-            Column {
+            var isExpanded by remember { (mutableStateOf(false)) }//save and track the state of expanded
+            Column(modifier = Modifier.clickable{isExpanded=!isExpanded}) {//toggle value
                 Text(
                     "Name: ${userInfo.name}",
                     color = MaterialTheme.colorScheme.secondary,//setting font color
                     style = MaterialTheme.typography.titleSmall,//setting font style
                     fontSize = 22.sp//setting font size
                 )
-                Spacer(modifier = Modifier.height(4.dp))//// Add a vertical space between the name and address texts
+                Spacer(Modifier.height(4.dp))//// Add a vertical space between the name and address texts
                 Text(
                     "Address: ${userInfo.address}",
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = if(isExpanded) Int.MAX_VALUE else 1//set max line
                 )
             }
         }
