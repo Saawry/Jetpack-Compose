@@ -3,6 +3,8 @@ package com.gadware.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -76,6 +78,8 @@ fun DisplayUserInfo(userInfo: UserDetails = UserDetails("Abdullah", "Dhaka, Bang
 
             Spacer(modifier = Modifier.width(5.dp))//// Add a horizontal space between the image and the column
             var isExpanded by remember { (mutableStateOf(false)) }//save and track the state of expanded
+            //surface color change will be animated on click
+            val surfaceColor by animateColorAsState(if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
             Column(modifier = Modifier.clickable{isExpanded=!isExpanded}) {//toggle value
                 Text(
                     "Name: ${userInfo.name}",
@@ -84,12 +88,21 @@ fun DisplayUserInfo(userInfo: UserDetails = UserDetails("Abdullah", "Dhaka, Bang
                     fontSize = 22.sp//setting font size
                 )
                 Spacer(Modifier.height(4.dp))//// Add a vertical space between the name and address texts
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    color = surfaceColor,// on click surface color will change with animation
+                    shadowElevation = 2.dp,
+                    modifier = Modifier
+                        .animateContentSize()//content resize will happen with animation
+                        .padding(1.dp)
+                ) {
                 Text(
                     "Address: ${userInfo.address}",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = if(isExpanded) Int.MAX_VALUE else 1//set max line
                 )
+                }
             }
         }
     }
